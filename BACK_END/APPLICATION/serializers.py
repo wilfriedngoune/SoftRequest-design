@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from.models import*
 
-
+""" classe"""
 class Administration(serializers.ModelSerializer):
     class Meta:
         model: Administration
