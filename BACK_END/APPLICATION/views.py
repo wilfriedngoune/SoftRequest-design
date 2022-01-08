@@ -7,4 +7,3 @@ from .models import*
 # Create your views here.
 api_view(['Get'])
 
-def
