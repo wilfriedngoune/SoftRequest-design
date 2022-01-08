@@ -33,7 +33,7 @@ class Administration(Utilisateur):
 
 class Requete(models.Model):
     description = models.TextField()
-    id_request = models.CharField(primary_key=True, max_length=10)
+    id_request = models.AutoField(auto_created=True, primary_key=True)
 
     
 
@@ -65,6 +65,7 @@ class Envoyer (models.Model):
     dateHeureEnvoie = models.DateTimeField()
 
 class Reponse (models.Model):
+    id_reponse = models.AutoField(primary_key=True, auto_created=True)
     requete= models.ForeignKey(Requete, on_delete=models.CASCADE)
     dateHeureRep = models.DateTimeField()
     status = models.CharField(max_length=30)
@@ -80,8 +81,8 @@ class Changement_filiere(Requete):
 
 class Note_erronee(Requete):
 
-    Note_erronee= models.FloatField()
-    Note_erronee= models.FloatField()
+    note_errone= models.FloatField()
+    note_correct= models.FloatField()
     examen=models.CharField(max_length=30)
     unite_enseignement=models.CharField(max_length=30)
 
