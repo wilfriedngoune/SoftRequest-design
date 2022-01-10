@@ -1,30 +1,34 @@
 from rest_framework import serializers
 from.models import*
 
+
 """ """
-class Administration(serializers.ModelSerializer):
+class AdministrationSerializer(serializers.ModelSerializer):
     class Meta:
-        model: Administration
+        model = Administration
         fields = '__all__'
 
 class EtudiantSerializer(serializers.ModelSerializer):
     class Meta:
-        model: Etudiant
+        model = Etudiant
         fields = '__all__'
+
+
+
 
 class GradeSerializer(serializers.ModelSerializer):
     class Meta:
-        model: Grade
+        model = Grade
         fields = '__all__'
 
 class ReponseSerializer(serializers.ModelSerializer):
     class Meta:
-        model: Reponse
+        model = Reponse
         fields = '__all__'
 
 class EnvoyerSerializer(serializers.ModelSerializer):
     class Meta:
-        model: Envoyer
+        model = Envoyer
         fields = '__all__'
 
 class DemandeSerialize(serializers.ModelSerializer):

@@ -15,7 +15,7 @@ class Utilisateur(models.Model):
 
 class Etudiant(Utilisateur):
     matricule = models.CharField( primary_key=True, max_length=8)
-    filiere = models.CharField(max_length=10)
+    filiere = models.CharField(max_length=20)
     niveau = models.CharField(max_length=10)
 
 

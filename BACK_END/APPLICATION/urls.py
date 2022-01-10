@@ -3,8 +3,8 @@ from .import views
 
 urlpatterns = [
     
-    path('etudiant/<int:id>', views.getEtudiant),
-    path('administration/<int:id>', views.getAdministration),
+    path('etudiant/<str:matricule>', views.getEtudiant),
+    path('administration/<str:email_pass>', views.getAdministration),
     path('etudiants/', views.allEtudiant),
     path('addetudiants/', views.addEtudiant),
     path('administration/', views.allAdministration),
