@@ -18,6 +18,10 @@ class Etudiant(Utilisateur):
     filiere = models.CharField(max_length=20)
     niveau = models.CharField(max_length=10)
 
+    def meStocker(self):
+        etudiant = Etudiant(matricule = self.matricule, nom_prenom = self.nom_prenom, email = self.email, password = self.password, filiere = self.filiere, niveau = self.niveau)
+        etudiant.save()
+
 
 class Grade(models.Model):
     nom_grade = models.CharField(primary_key=True, max_length=10 )

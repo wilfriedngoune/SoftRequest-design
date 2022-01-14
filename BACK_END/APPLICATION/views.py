@@ -7,8 +7,48 @@ from django.http.response import JsonResponse
 from rest_framework.serializers import Serializer
 from .serializers import*
 from .models import* 
+#importation des fichier necessaire pour 
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from .forms import *
+
+
+
 
 # Create your views here.
+
+
+#Endpoint qui permet de mettre un etudiant dans la base de donne
+@api_view(['POST'])
+def insertUser(request):
+    if request.method == 'POST':
+        etudiant_data=JSONParser().parse(request)
+        etudiants_serializer=EtudiantSerializer(data=etudiant_data)
+        if etudiants_serializer.is_valid():
+            etudiants_serializer.save()
+            return JsonResponse("Added Successfully",safe=False)
+        return JsonResponse("Failed to Add",safe=False)
+
+
+
+
+"""@api_view(['GET'])
+    E1 = Etudiant()
+    E1.meStocker()
+    etudiants = Etudiant.objects.all()
+    serialization = EtudiantSerializer(etudiants, many = True)
+    return Response(serialization.data)"""
+
+
+
+
+
+
+
+
+
+
+
 
 # Api pour  afficher tous les etudiants et enseignants
 @api_view(['GET'])
@@ -28,7 +68,6 @@ def allAdministration(request):
 # Api pour  creer  un etudiants et enseignants
 @api_view(['POST'])
 def addEtudiant(request):
-    
     serialization = EtudiantSerializer(data = request.data,many = True)
     if serialization.is_valid():
         serialization.save()
@@ -65,6 +104,7 @@ def updateAdministration(request,email_pass):
     if Serializer.is_valid():
         serialization.save()
     return Response(serialization.data)
+
 
 @api_view(['PUT'])
 def updateEtudiant(request,matricule):
