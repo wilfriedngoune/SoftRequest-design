@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ["softrequest.herokuapp.com", "127.0.0.1"]
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework_swagger',
     'APPLICATION',
     'rest_framework',
     'django.contrib.admin',
