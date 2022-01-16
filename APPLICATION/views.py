@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import generics
 from rest_framework.parsers import JSONParser
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse
@@ -19,6 +20,20 @@ from .forms import *
 
 
 #Endpoint qui permet de mettre un etudiant dans la base de donne
+class StudentList(generics.ListCreateAPIView):
+    queryset = Etudiant.objects.all()
+    serializer_class = EtudiantSerializer
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = EtudiantSerializer(queryset, many = True)
+        return Response(serializer.data)
+
+
+
+
+
+
 @api_view(['POST'])
 def insertUser(request):
     if request.method == 'POST':

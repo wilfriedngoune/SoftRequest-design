@@ -1,98 +1,68 @@
+from pyexpat import model
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 from django.db import models
 from django.db.models.fields.related import ForeignKey
 
-class Utilisateur(models.Model):
-    nom_prenom = models.CharField(max_length=100)
-    email = models.CharField(max_length=30)
-    password = models.CharField(max_length=20)
-
-    class Meta:
-        abstract = True
-
-
-class Etudiant(Utilisateur):
-    matricule = models.CharField( primary_key=True, max_length=8)
-    filiere = models.CharField(max_length=20)
-    niveau = models.CharField(max_length=10)
-
-    def meStocker(self):
-        etudiant = Etudiant(matricule = self.matricule, nom_prenom = self.nom_prenom, email = self.email, password = self.password, filiere = self.filiere, niveau = self.niveau)
-        etudiant.save()
-
-
 class Grade(models.Model):
-    nom_grade = models.CharField(primary_key=True, max_length=10 )
-    pass
+    nom_grade = models.CharField(unique=True, max_length=10)
 
-    
-class Administration(Utilisateur):
-    email_pass = models.CharField(primary_key=True, max_length=30 )
-    departement = models.CharField(max_length=15)
+class Administration(models.Model):
+    user = models.OneToOneField(User,  on_delete=models.CASCADE )
+    id_Admin = models.CharField(unique = True, max_length=30, null=False)
+    departement = models.CharField(max_length=30)
     grade = models.ForeignKey( Grade, on_delete=models.CASCADE)
 
+class Etudiant(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    matricule = models.CharField( unique=True, max_length=8)
+    filiere = models.CharField(max_length=20)
+    niveau = models.CharField(max_length=20)
 
 
 class Requete(models.Model):
+    id_request = models.CharField(unique=True, max_length= 10, null=False)
+    objet = models.CharField(max_length= 100)
     description = models.TextField()
-    id_request = models.AutoField(auto_created=True, primary_key=True)
-
-    
-
-class Demande(Requete):
-    object_demande= models.TextField()
-    
-
-class Abscence_note(Requete):
-    unite_enseignement= models.CharField( max_length=7)
-    examen= models.CharField(max_length=10)
-   
-class Activation_de_matricule(Requete):
-    matricule_etudiant= models.CharField(max_length=10)
 
 
-class Abscence_payement(Requete):
-    matricule_etudiant= models.CharField(max_length=10)
 
 class PieceJointe(models.Model):
     requete= models.ForeignKey(Requete, on_delete=models.CASCADE)
-    nom_piece= models.CharField(max_length=50)
-    type_piece=models.CharField(max_length=10)
+    nom_pieceJointe= models.CharField(max_length=50)
+    type_pieceJointe=models.CharField(max_length=10)
+    pieceJointe = models.FileField(upload_to= 'Pieces')
+    
 
+class ReqDemande(Requete):
+    nomDocument = models.CharField(max_length=20)
+    anneeAcademique = models.CharField(max_length=10)
+    
+
+class ReqAbsence(Requete):
+    unite_enseignement= models.CharField( max_length=30)
+    examen= models.CharField(max_length=30)
+
+class ReqInformation_eronee(Requete):
+    info_erronee= models.CharField(max_length=100)
+    ancienneInfo= models.CharField(max_length=50)
+    nouvelleInfo= models.CharField(max_length=50)
+ 
 
 class Envoyer (models.Model):
+    id_envoi = models.CharField(unique=True, max_length=20, null=True)
     administration= models.ForeignKey(Administration, on_delete=models.CASCADE)
     etudiant= models.ForeignKey(Etudiant, on_delete=models.CASCADE)
     requete= models.ForeignKey(Requete, on_delete=models.CASCADE)
     dateHeureEnvoie = models.DateTimeField()
 
 class Reponse (models.Model):
-    id_reponse = models.AutoField(primary_key=True, auto_created=True)
+    id_reponse = models.CharField(unique=True, max_length=20, null=False)
+    administration= models.ForeignKey(Administration, on_delete=models.CASCADE)
+    etudiant= models.ForeignKey(Etudiant, on_delete=models.CASCADE)
     requete= models.ForeignKey(Requete, on_delete=models.CASCADE)
     dateHeureRep = models.DateTimeField()
     status = models.CharField(max_length=30)
     description = models.TextField(max_length=15)
-
-
-class Bloquage_matricule(Requete):
-    matricule_etudiant=models.CharField(max_length=10)
-
-class Changement_filiere(Requete):
-    anciene_filiere= models.CharField(max_length=50)
-    new_filiere= models.CharField(max_length=50)
-
-class Note_erronee(Requete):
-
-    note_errone= models.FloatField()
-    note_correct= models.FloatField()
-    examen=models.CharField(max_length=30)
-    unite_enseignement=models.CharField(max_length=30)
-
-
-class Information_eronee(Requete):
-    non_erronee= models.CharField(max_length=100)
-    matricule_erronee= models.CharField(max_length=7)
-    non_correct= models.CharField(max_length=100)
-    matricule_correct= models.CharField(max_length=7)

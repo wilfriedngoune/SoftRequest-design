@@ -2,80 +2,60 @@ from rest_framework import serializers
 from.models import*
 
 
-""" """
+class GradeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Grade
+        fields = ('nom_grade')
+
 class AdministrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Administration
-        fields = '__all__'
+        fields = ('user','id_Admin','departement','grade')
 
 class EtudiantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Etudiant
-        fields = '__all__'
+        fields = ('user', 'matricule','filiere','niveau')
 
 
-
-
-class GradeSerializer(serializers.ModelSerializer):
+class RequeteSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Grade
-        fields = '__all__'
-
-class ReponseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Reponse
-        fields = '__all__'
-
-class EnvoyerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Envoyer
-        fields = '__all__'
-
-class DemandeSerialize(serializers.ModelSerializer):
-    class Meta:
-        model = Demande
-        fields = '_all_'
-
-class Abscence_noteSerialize(serializers.ModelSerializer):
-    class Meta:
-        model = Abscence_note
-        fields = '_all_'
-
-
-class Activation_de_matriculeSerialize(serializers.ModelSerializer):
-    class Meta:
-        model = Activation_de_matricule
-        fields = '_all'
-
-class Abscence_payementSerialize(serializers.ModelSerializer):
-    class Meta:
-        model = Abscence_payement
-        fields = '_all'
+        model = Requete
+        fields = ('id_request','objet','description')
 
 
 class PieceJointeSerialize(serializers.ModelSerializer):
     class Meta:
         model = PieceJointe
-        fields = '_all'
+        fields = ('requete','nom_pieceJointe','type_pieceJointe','pieceJointe')
 
-class Bloquage_matriculeSerialize(serializers.ModelSerializer):
+class ReqDemandeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Bloquage_matricule
-        fields = '_all'
+        model = ReqDemande
+        fields = ('nomDocument','anneeAcademique')
 
-
-class Changement_filiereSerialize(serializers.ModelSerializer):
+class ReqAbsenceSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Changement_filiere
-        fields = '_all'
+        model = ReqAbsence
+        fields = ('unite_enseignement','examen')
 
-
-class Note_erroneeSerialize(serializers.ModelSerializer):
+class ReInformation_eroneeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Note_erronee
-        fields = '_all'
+        model = ReqInformation_eronee
+        fields = ('info_erronee','ancienneInfo','nouvelleInfo')
 
-class Information_eroneeSerialize(serializers.ModelSerializer):
+
+class ReponseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Information_eronee
-        fields = '_all'
+        model = Reponse
+        fields = ('id_reponse','administration','etudiant','requete','dateHeureRep','status','description')
+
+class EnvoyerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Envoyer
+        fields = ('id_envoi','administration','etudiant','requete','dateHeureEnvoie')
+
+
+
+
+
