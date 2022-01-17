@@ -39,6 +39,15 @@ class RequestList(generics.ListCreateAPIView):
         serializer = RequeteSerializer(queryset, many = True)
         return Response(serializer.data)
 
+class EnvoitList(generics.ListCreateAPIView):
+    queryset = Envoyer.objects.all()
+    serializer_class = EnvoyerSerializer
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = EnvoyerSerializer(queryset, many = True)
+        return Response(serializer.data)
+
 
 
 
