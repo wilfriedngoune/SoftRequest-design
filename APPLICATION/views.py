@@ -30,6 +30,16 @@ class StudentList(generics.ListCreateAPIView):
         return Response(serializer.data)
 
 
+class RequestList(generics.ListCreateAPIView):
+    queryset = Requete.objects.all()
+    serializer_class = RequeteSerializer
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = RequeteSerializer(queryset, many = True)
+        return Response(serializer.data)
+
+
 
 
 

@@ -25,7 +25,7 @@ class Etudiant(models.Model):
 class Requete(models.Model):
     id_request = models.CharField(unique=True, max_length= 10, null=False)
     objet = models.CharField(max_length= 100)
-    description = models.TextField()
+    description = models.TextField( null = True)
 
 
 
@@ -65,4 +65,4 @@ class Reponse (models.Model):
     requete= models.ForeignKey(Requete, on_delete=models.CASCADE)
     dateHeureRep = models.DateTimeField()
     status = models.CharField(max_length=30)
-    description = models.TextField(max_length=15)
+    description = models.TextField(null = True)
