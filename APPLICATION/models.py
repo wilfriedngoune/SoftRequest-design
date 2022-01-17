@@ -9,17 +9,26 @@ from django.db.models.fields.related import ForeignKey
 class Grade(models.Model):
     nom_grade = models.CharField(unique=True, max_length=10)
 
+class Preference(models.Model):
+    langue = models.CharField(max_length=30, null=True)
+    theme = models.CharField(max_length=30, null=True)
+    couleur_avartar = models.CharField(max_length=30, null=True)
+
+
 class Administration(models.Model):
+   
     user = models.OneToOneField(User,  on_delete=models.CASCADE )
     id_Admin = models.CharField(unique = True, max_length=30, null=False)
     departement = models.CharField(max_length=30)
     grade = models.ForeignKey( Grade, on_delete=models.CASCADE)
+    preference = models.OneToOneField (Preference, on_delete= models.CASCADE, null = True)
 
 class Etudiant(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     matricule = models.CharField( unique=True, max_length=8)
     filiere = models.CharField(max_length=20)
     niveau = models.CharField(max_length=20)
+    preference = models.OneToOneField (Preference, on_delete= models.CASCADE , null = True)
 
 
 class Requete(models.Model):
@@ -46,7 +55,6 @@ class ReqAbsence(Requete):
     examen= models.CharField(max_length=30)
 
 class ReqInformation_eronee(Requete):
-    info_erronee= models.CharField(max_length=100)
     ancienneInfo= models.CharField(max_length=50)
     nouvelleInfo= models.CharField(max_length=50)
  
@@ -66,3 +74,5 @@ class Reponse (models.Model):
     dateHeureRep = models.DateTimeField()
     status = models.CharField(max_length=30)
     description = models.TextField(null = True)
+
+
