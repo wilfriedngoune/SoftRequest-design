@@ -57,11 +57,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'BACK_END.urls'
-ALLOWED_HOSTS = ['*']
+#ALLOWED_HOSTS = ['*']
 
-CORS_ORIGINS_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
-#CORS_ALLOW_ALL_ORIGINS = True
+#CORS_ORIGINS_ALLOW_ALL = True
+#CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_METHODS = [
     'GET',
@@ -72,12 +72,15 @@ CORS_ALLOW_METHODS = [
     'OPTIONS'
 ]
 CORS_ALLOW_HEADERS = [
-    'x-requested-with',
-    'content-type',
     'accept',
-    'origin',
+    'accept-encoding',
     'authorization',
-    'x-csrftoken'
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with'
 ]
 
 TEMPLATES = [
