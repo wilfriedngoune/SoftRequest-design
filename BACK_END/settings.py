@@ -51,7 +51,6 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with'
 ]
 
-
 # Application definition
 
 INSTALLED_APPS = [
