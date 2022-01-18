@@ -28,39 +28,7 @@ SECRET_KEY = 'django-insecure-(r9g4q0p9q0#e5*wsyj7cd+n(p(ad1t=h_&25jts_9@+ok8mjz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-#ALLOWED_HOSTS = ["softrequest.herokuapp.com", "127.0.0.1"]
-
-
-# Application definition
-
-INSTALLED_APPS = [
-    'APPLICATION',
-    'rest_framework',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'corsheaders',
-]
-
-MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
-
-ROOT_URLCONF = 'BACK_END.urls'
 ALLOWED_HOSTS = ['*']
-
-#CORS_ORIGINS_ALLOW_ALL = True
-#CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_METHODS = [
@@ -82,6 +50,37 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with'
 ]
+
+
+# Application definition
+
+INSTALLED_APPS = [
+    'APPLICATION',
+    'rest_framework',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'corsheaders',
+]
+
+MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+ROOT_URLCONF = 'BACK_END.urls'
+
+#CORS_ORIGINS_ALLOW_ALL = True
+#CORS_ALLOW_CREDENTIALS = True
 
 TEMPLATES = [
     {
