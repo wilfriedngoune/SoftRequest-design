@@ -14,8 +14,6 @@ from pathlib import Path
 
 import django
 #import django_heroku
-from corsheaders.defaults import default_methods
-from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -65,8 +63,22 @@ CORS_ORIGINS_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 #CORS_ALLOW_ALL_ORIGINS = True
 
-CORS_ALLOW_METHODS = default_methods
-CORS_ALLOW_HEADERS = default_headers
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS'
+]
+CORS_ALLOW_HEADERS = [
+    'x-requested-with',
+    'content-type',
+    'accept',
+    'origin',
+    'authorization',
+    'x-csrftoken'
+]
 
 TEMPLATES = [
     {
