@@ -34,7 +34,6 @@ ALLOWED_HOSTS = ["softrequest.herokuapp.com", "127.0.0.1"]
 # Application definition
 
 INSTALLED_APPS = [
-    'corsheaders',
     'APPLICATION',
     'rest_framework',
     'django.contrib.admin',
@@ -43,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +57,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'BACK_END.urls'
-CORS_ALLOW_ALL_ORIGINS = True
+ALLOWED_HOSTS = ['*']
+CORS_ORIGINS_ALLOW_ALL = True
 
 TEMPLATES = [
     {
