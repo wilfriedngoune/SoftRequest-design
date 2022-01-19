@@ -26,38 +26,31 @@ class UserList(CreateModelMixin, ListModelMixin, GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    def list(self, request):
-        queryset = self.get_queryset()
-        serializer = UserSerializer(queryset, many = True)
-        return Response(serializer.data)
 
 class StudentList(CreateModelMixin, ListModelMixin, GenericViewSet):
     serializer_class = EtudiantSerializer
     queryset = Etudiant.objects.raw('SELECT * FROM APPLICATION_Etudiant WHERE matricule = "19M2325"')
 
-    def list(self, request):
+
+class StudentList(CreateModelMixin, ListModelMixin, GenericViewSet):
+    serializer_class = EtudiantSerializer
+    queryset = Etudiant.objects.all()
+
+    """def list(self, request):
         queryset = self.get_queryset()
         serializer = EtudiantSerializer(queryset, many = True)
-        return Response(serializer.data)
+        return Response(serializer.data)"""
 
+class Administration(CreateModelMixin, ListModelMixin, GenericViewSet):
+    serializer_class = AdministrationSerializer
+    queryset = Administration.objects.all()
 
-class RequestList(generics.ListCreateAPIView):
-    queryset = Requete.objects.all()
-    serializer_class = RequeteSerializer
-
-    def list(self, request):
+    """def list(self, request):
         queryset = self.get_queryset()
-        serializer = RequeteSerializer(queryset, many = True)
-        return Response(serializer.data)
+        serializer = EtudiantSerializer(queryset, many = True)
+        return Response(serializer.data)"""
 
-class EnvoitList(generics.ListCreateAPIView):
-    queryset =  Etudiant.objects.raw('SELECT * FROM APPLICATION_Envoyer, APPLICATION_Etudiant, APPLICATION_Administration')
-    serializer_class = EnvoyerSerializer
 
-    def list(self, request):
-        queryset = self.get_queryset()
-        serializer = EnvoyerSerializer(queryset, many = True)
-        return Response(serializer.data)
 
 
 
@@ -160,29 +153,3 @@ def updateEtudiant(request,matricule):
     return Response(serialization.data)
 
 
-"""@csrf_exempt
-def etudiantApi(request,id= ""):
-    if request.method=='GET':
-        etudiants = Etudiant.objects.all()
-        etudiants_serializer=EtudiantSerializer(etudiants,many=True)
-        return JsonResponse(etudiants_serializer.data,safe=False)
-    elif request.method=='POST':
-        etudiant_data=JSONParser().parse(request)
-        etudiants_serializer=EtudiantSerializer(data=etudiant_data)
-        if etudiants_serializer.is_valid():
-            etudiants_serializer.save()
-            return JsonResponse("Added Successfully",safe=False)
-        return JsonResponse("Failed to Add",safe=False)
-    elif request.method=='PUT':
-        etudiant_data=JSONParser().parse(request)
-        etudiant=Etudiant.objects.get(matricule=etudiant_data['matricule'])
-        etudiants_serializer=EtudiantSerializer(etudiant,data=etudiant_data)
-        if etudiants_serializer.is_valid():
-            etudiants_serializer.save()
-            return JsonResponse("Updated Successfully",safe=False)
-        return JsonResponse("Failed to Update")
-    elif request.method=='DELETE':
-        etudiant=Etudiant.objects.get(matricule=id)
-        etudiant.delete()
-        return JsonResponse("Deleted Successfully",safe=False)
-        """
