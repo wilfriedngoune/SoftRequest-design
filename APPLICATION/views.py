@@ -40,24 +40,16 @@ class StudentList(CreateModelMixin, ListModelMixin, GenericViewSet):
         serializer = EtudiantSerializer(queryset, many = True)
         return Response(serializer.data)"""
 
+class Administration(CreateModelMixin, ListModelMixin, GenericViewSet):
+    serializer_class = AdministrationSerializer
+    queryset = Administration.objects.all()
 
-class RequestList(generics.ListCreateAPIView):
-    queryset = Requete.objects.all()
-    serializer_class = RequeteSerializer
-
-    def list(self, request):
+    """def list(self, request):
         queryset = self.get_queryset()
-        serializer = RequeteSerializer(queryset, many = True)
-        return Response(serializer.data)
+        serializer = EtudiantSerializer(queryset, many = True)
+        return Response(serializer.data)"""
 
-class EnvoitList(generics.ListCreateAPIView):
-    queryset = Envoyer.objects.all()
-    serializer_class = EnvoyerSerializer
 
-    def list(self, request):
-        queryset = self.get_queryset()
-        serializer = EnvoyerSerializer(queryset, many = True)
-        return Response(serializer.data)
 
 
 
