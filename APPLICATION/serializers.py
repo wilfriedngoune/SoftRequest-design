@@ -1,6 +1,5 @@
 from dataclasses import field
 from re import M
-from tkinter import E
 from rest_framework import serializers
 from django.db import models
 from django.contrib.auth.models import User
