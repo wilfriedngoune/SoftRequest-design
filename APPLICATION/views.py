@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
+from rest_framework.viewsets import GenericViewSet
+from rest_framework.mixins import (CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, ListModelMixin)
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework.parsers import JSONParser
@@ -20,14 +22,23 @@ from .forms import *
 
 
 #Endpoint qui permet de mettre un etudiant dans la base de donne
-class StudentList(generics.ListCreateAPIView):
-    queryset = Etudiant.objects.all()
-    serializer_class = EtudiantSerializer
+class UserList(CreateModelMixin, ListModelMixin, GenericViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-    def list(self, request):
+    """def list(self, request):
+        queryset = self.get_queryset()
+        serializer = UserSerializer(queryset, many = True)
+        return Response(serializer.data)
+"""
+class StudentList(CreateModelMixin, ListModelMixin, GenericViewSet):
+    serializer_class = EtudiantSerializer
+    queryset = Etudiant.objects.all()
+
+    """def list(self, request):
         queryset = self.get_queryset()
         serializer = EtudiantSerializer(queryset, many = True)
-        return Response(serializer.data)
+        return Response(serializer.data)"""
 
 
 class RequestList(generics.ListCreateAPIView):
@@ -37,6 +48,15 @@ class RequestList(generics.ListCreateAPIView):
     def list(self, request):
         queryset = self.get_queryset()
         serializer = RequeteSerializer(queryset, many = True)
+        return Response(serializer.data)
+
+class EnvoitList(generics.ListCreateAPIView):
+    queryset = Envoyer.objects.all()
+    serializer_class = EnvoyerSerializer
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = EnvoyerSerializer(queryset, many = True)
         return Response(serializer.data)
 
 
@@ -140,29 +160,3 @@ def updateEtudiant(request,matricule):
     return Response(serialization.data)
 
 
-"""@csrf_exempt
-def etudiantApi(request,id= ""):
-    if request.method=='GET':
-        etudiants = Etudiant.objects.all()
-        etudiants_serializer=EtudiantSerializer(etudiants,many=True)
-        return JsonResponse(etudiants_serializer.data,safe=False)
-    elif request.method=='POST':
-        etudiant_data=JSONParser().parse(request)
-        etudiants_serializer=EtudiantSerializer(data=etudiant_data)
-        if etudiants_serializer.is_valid():
-            etudiants_serializer.save()
-            return JsonResponse("Added Successfully",safe=False)
-        return JsonResponse("Failed to Add",safe=False)
-    elif request.method=='PUT':
-        etudiant_data=JSONParser().parse(request)
-        etudiant=Etudiant.objects.get(matricule=etudiant_data['matricule'])
-        etudiants_serializer=EtudiantSerializer(etudiant,data=etudiant_data)
-        if etudiants_serializer.is_valid():
-            etudiants_serializer.save()
-            return JsonResponse("Updated Successfully",safe=False)
-        return JsonResponse("Failed to Update")
-    elif request.method=='DELETE':
-        etudiant=Etudiant.objects.get(matricule=id)
-        etudiant.delete()
-        return JsonResponse("Deleted Successfully",safe=False)
-        """
