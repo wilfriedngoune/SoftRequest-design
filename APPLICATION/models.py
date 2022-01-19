@@ -6,6 +6,9 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.fields.related import ForeignKey
 
+
+
+
 class Grade(models.Model):
     nom_grade = models.CharField(unique=True, max_length=10)
 

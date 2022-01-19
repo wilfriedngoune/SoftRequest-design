@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
+from rest_framework.viewsets import GenericViewSet
+from rest_framework.mixins import (CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, ListModelMixin)
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework.parsers import JSONParser
@@ -20,9 +22,18 @@ from .forms import *
 
 
 #Endpoint qui permet de mettre un etudiant dans la base de donne
-class StudentList(generics.ListCreateAPIView):
-    queryset = Etudiant.objects.all()
+class UserList(CreateModelMixin, ListModelMixin, GenericViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = UserSerializer(queryset, many = True)
+        return Response(serializer.data)
+
+class StudentList(CreateModelMixin, ListModelMixin, GenericViewSet):
     serializer_class = EtudiantSerializer
+    queryset = Etudiant.objects.raw('SELECT * FROM APPLICATION_Etudiant WHERE matricule = "19M2325"')
 
     def list(self, request):
         queryset = self.get_queryset()
@@ -40,7 +51,7 @@ class RequestList(generics.ListCreateAPIView):
         return Response(serializer.data)
 
 class EnvoitList(generics.ListCreateAPIView):
-    queryset = Envoyer.objects.all()
+    queryset =  Etudiant.objects.raw('SELECT * FROM APPLICATION_Envoyer, APPLICATION_Etudiant, APPLICATION_Administration')
     serializer_class = EnvoyerSerializer
 
     def list(self, request):
