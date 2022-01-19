@@ -10,7 +10,7 @@ from.models import*
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email', 'password')
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'password')
 
 class GradeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -38,7 +38,8 @@ class EtudiantSerializer(serializers.ModelSerializer):
         last_name = user_info['last_name']
         email = user_info['email']
         password = user_info['password']
-        user = User.objects.create(first_name = first_name, last_name = last_name,
+        username = user_info['username']
+        user = User.objects.create(username = username, first_name = first_name, last_name = last_name,
                                          email = email, password = password)
         return Etudiant.objects.create(user = user, matricule = self.validated_data['matricule'],
                         filiere = self.validated_data['filiere'], niveau = self.validated_data['niveau'])       
