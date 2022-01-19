@@ -3,9 +3,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.fields.related import ForeignKey
+from django.forms import CharField
 
 # Create your models here.
 #pour la realisation de notre bd nous allons  utiliser  le fichier model de notre  application
+
 
 class Grade(models.Model):
     nom_grade = models.CharField(unique=True, max_length=10)
@@ -22,14 +24,14 @@ class Administration(models.Model):
     id_Admin = models.CharField(unique = True, max_length=30, null=False)
     departement = models.CharField(max_length=30)
     grade = models.ForeignKey( Grade, on_delete=models.CASCADE)
-    preference = models.OneToOneField (Preference, on_delete= models.CASCADE, null = True)
+    #preference = models.OneToOneField (Preference, on_delete= models.CASCADE, null = True)
 
 class Etudiant(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     matricule = models.CharField( unique=True, max_length=8)
     filiere = models.CharField(max_length=20)
     niveau = models.CharField(max_length=20)
-    preference = models.OneToOneField (Preference, on_delete= models.CASCADE , null = True)
+    #preference = models.OneToOneField (Preference, on_delete= models.CASCADE , null = True)
 
 
 class Requete(models.Model):

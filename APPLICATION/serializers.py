@@ -1,5 +1,9 @@
+from dataclasses import fields
 from rest_framework import serializers
 from.models import*
+from django.contrib.auth.models import User
+
+
 
 # Create your models here.
 #pour la realisation de notre bd nous allons  utiliser  le fichier model de notre  application
@@ -56,7 +60,10 @@ class EnvoyerSerializer(serializers.ModelSerializer):
         model = Envoyer
         fields = ('id_envoi','administration','etudiant','requete','dateHeureEnvoie')
 
-
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields= ('id', 'username', 'first_name', 'last_name', 'email')
 
 
 

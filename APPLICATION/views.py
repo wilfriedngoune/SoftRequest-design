@@ -1,3 +1,8 @@
+import bdb
+import select
+from socket import fromfd
+from tkinter.tix import Select
+from urllib import request
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -6,6 +11,9 @@ from rest_framework.parsers import JSONParser
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse
 from rest_framework.serializers import Serializer
+
+import user_management
+from user_management.serealize import Userserializer
 from .serializers import*
 from .models import* 
 #importation des fichier necessaire pour 
@@ -52,6 +60,16 @@ class AdministrateList(generics.ListCreateAPIView):
         serializer = AdministrationSerializer(queryset, many = True)
         return Response(serializer.data)
 
+
+#Endpoint qui permet de mettre un administration dans la base de donne
+class UserList(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = UserSerializer(queryset, many = True)
+        return Response(serializer.data)
 
 
 """
