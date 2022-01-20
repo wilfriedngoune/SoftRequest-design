@@ -15,11 +15,6 @@ from django.shortcuts import render
 from .forms import *
 
 
-
-
-# Create your views here.
-
-
 #Endpoint qui permet de mettre un etudiant dans la base de donne
 
 class UserList(CreateModelMixin, ListModelMixin, GenericViewSet):
@@ -51,8 +46,8 @@ class AdministrationList(CreateModelMixin, ListModelMixin, GenericViewSet):
 @api_view(['POST'])
 def insertUser(request):
     if request.method == 'POST':
-        etudiant_data = request.data
-        etudiants_serializer = EtudiantSerializer(data=etudiant_data)
+        etudiant_data = request.post
+        etudiants_serializer = EtudiantSerializer(data = etudiant_data)
         if etudiants_serializer.is_valid():
             etudiants_serializer.save()
             return Response({
