@@ -3,6 +3,7 @@ from django.urls import path
 from .import views
 from .views import *
 urlpatterns = [
+    path('insert/user/', views.insertUser),
     path('etudiants', StudentList.as_view({'get':'list','post':'create'})),
     path('user', UserList.as_view({'get':'list','post':'create'})),
     path('administration', AdministrationList.as_view({'get':'list','post':'create'})),
@@ -15,7 +16,6 @@ urlpatterns = [
 
 
     #Mes trucs de test (ca va marcher, jai confiance)
-    path('insert/user/', views.insertUser),
 
 
 ]
