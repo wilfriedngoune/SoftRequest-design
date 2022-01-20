@@ -52,11 +52,9 @@ class EtudiantSerializer(serializers.ModelSerializer):
         password = user_info['password']
         user = User.objects.create(first_name = first_name, last_name = last_name,
                                          email = email, password = password)
-        Etudiant.objects.create(user = user, matricule = self.validated_data['matricule'],
+        return Etudiant.objects.create(user = user, matricule = self.validated_data['matricule'],
                       filiere = self.validated_data['filiere'], niveau = self.validated_data['niveau']) 
-        return HttpResponse({
-            'message' : 'Etudiant envoye avec succes ..'
-        }, status = STATUS.HTTP_200_OK)     
+            
 
 
 class PieceJointeSerializer(serializers.ModelSerializer):

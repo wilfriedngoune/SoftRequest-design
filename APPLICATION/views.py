@@ -51,11 +51,11 @@ def insertUser(request):
         if etudiants_serializer.is_valid():
             etudiants_serializer.save()
             return Response({
-                "donnee" : etudiants_serializer, 
+                "donnee" : etudiants_serializer.data, 
                 "Message" : "Added Successfully"
                 })
         return Response({
-                "donnee" : etudiants_serializer, 
+                "donnee" : etudiants_serializer.data, 
                 "Message" : "Failed to request .."
                 })
 
