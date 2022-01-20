@@ -6,7 +6,6 @@ from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework.parsers import JSONParser
 from django.views.decorators.csrf import csrf_exempt
-from django.http.response import JsonResponse
 from rest_framework.serializers import Serializer
 from .serializers import*
 from .models import* 
@@ -56,8 +55,8 @@ def insertUser(request):
         etudiants_serializer = EtudiantSerializer(data=etudiant_data)
         if etudiants_serializer.is_valid():
             etudiants_serializer.save()
-            return JsonResponse("Added Successfully",safe=False)
-        return JsonResponse("Failed to Add",safe=False)
+            return Response( etudiants_serializer.data, "Added Successfully",safe=False)
+        return Response(etudiants_serializer.data, "Failed to Add",safe=False)
 
 
 
