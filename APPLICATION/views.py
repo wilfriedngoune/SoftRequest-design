@@ -55,9 +55,14 @@ def insertUser(request):
         etudiants_serializer = EtudiantSerializer(data=etudiant_data)
         if etudiants_serializer.is_valid():
             etudiants_serializer.save()
-            return Response( etudiants_serializer.data, "Added Successfully",safe=False)
-        return Response(etudiants_serializer.data, "Failed to Add",safe=False)
-
+            return Response({
+                "donnee" : etudiants_serializer.data, 
+                "Message" : "Added Successfully"
+                })
+        return Response({
+                "donnee" : etudiants_serializer.data, 
+                "Message" : "Failed to request .."
+                })
 
 
 
