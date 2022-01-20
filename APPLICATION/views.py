@@ -37,9 +37,6 @@ class StudentList(CreateModelMixin, ListModelMixin, GenericViewSet):
     serializer_class = EtudiantSerializer
     queryset = Etudiant.objects.all()
 
-    def signin(request):
-        user_serializers = EtudiantSerializer(data = request.post)
-        return user_serializers.data
 
     """def list(self, request):
         queryset = self.get_queryset()
