@@ -22,26 +22,31 @@ from .forms import *
 
 
 #Endpoint qui permet de mettre un etudiant dans la base de donne
+
 class UserList(CreateModelMixin, ListModelMixin, GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
-class StudentList(CreateModelMixin, ListModelMixin, GenericViewSet):
+"""class StudentList(CreateModelMixin, ListModelMixin, GenericViewSet):
     serializer_class = EtudiantSerializer
-    queryset = Etudiant.objects.raw('SELECT * FROM APPLICATION_Etudiant WHERE matricule = "19M2325"')
+    queryset = Etudiant.objects.raw('SELECT * FROM APPLICATION_Etudiant WHERE matricule = "19M2325"')"""
 
 
 class StudentList(CreateModelMixin, ListModelMixin, GenericViewSet):
     serializer_class = EtudiantSerializer
     queryset = Etudiant.objects.all()
 
+    def signin(request):
+        user_serializers = EtudiantSerializer(data = request.post)
+        return user_serializers.data
+
     """def list(self, request):
         queryset = self.get_queryset()
         serializer = EtudiantSerializer(queryset, many = True)
-        return Response(serializer.data)"""
+        return Response(serializer.da   ta)"""
 
-class Administration(CreateModelMixin, ListModelMixin, GenericViewSet):
+class AdministrationList(CreateModelMixin, ListModelMixin, GenericViewSet):
     serializer_class = AdministrationSerializer
     queryset = Administration.objects.all()
 
@@ -56,16 +61,17 @@ class Administration(CreateModelMixin, ListModelMixin, GenericViewSet):
 
 
 
-
 @api_view(['POST'])
 def insertUser(request):
     if request.method == 'POST':
-        etudiant_data=JSONParser().parse(request)
-        etudiants_serializer=EtudiantSerializer(data=etudiant_data)
+        etudiant_data = JSONParser().parse(request)
+        etudiants_serializer = EtudiantSerializer(data=etudiant_data)
         if etudiants_serializer.is_valid():
             etudiants_serializer.save()
             return JsonResponse("Added Successfully",safe=False)
         return JsonResponse("Failed to Add",safe=False)
+
+
 
 
 
@@ -76,7 +82,6 @@ def insertUser(request):
     etudiants = Etudiant.objects.all()
     serialization = EtudiantSerializer(etudiants, many = True)
     return Response(serialization.data)"""
-
 
 
 

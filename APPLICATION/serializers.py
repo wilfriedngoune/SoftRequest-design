@@ -1,5 +1,7 @@
-from dataclasses import field
+from dataclasses import field, fields
 from re import M
+from telnetlib import STATUS
+from django.http import HttpResponse
 from rest_framework import serializers
 from django.db import models
 from django.contrib.auth.models import User
@@ -21,7 +23,7 @@ class AdministrationSerializer(serializers.ModelSerializer):
         model = Administration
         fields = ('user', 'id', 'departement', 'grade')
     
-    def create(self, validated_data):
+    def create(self, validated_data,):
 
         user_admin = self.validated_data.pop('user')
         username = user_admin['username']
@@ -42,8 +44,7 @@ class EtudiantSerializer(serializers.ModelSerializer):
         model = Etudiant
         fields = ('user', 'matricule','filiere','niveau')
 
-    def create(self, validated_data):
-
+    def create(self, validated_data, request):
         user_info = self.validated_data.pop('user')
         first_name = user_info['first_name']
         last_name = user_info['last_name']
@@ -51,8 +52,11 @@ class EtudiantSerializer(serializers.ModelSerializer):
         password = user_info['password']
         user = User.objects.create(first_name = first_name, last_name = last_name,
                                          email = email, password = password)
-        return Etudiant.objects.create(user = user, matricule = self.validated_data['matricule'],
-                        filiere = self.validated_data['filiere'], niveau = self.validated_data['niveau'])       
+        Etudiant.objects.create(user = user, matricule = self.validated_data['matricule'],
+                      filiere = self.validated_data['filiere'], niveau = self.validated_data['niveau']) 
+        return HttpResponse({
+            'message' : 'Etudiant envoye avec succes ..'
+        }, status = STATUS.HTTP_200_OK)     
 
 
 class PieceJointeSerializer(serializers.ModelSerializer):
@@ -84,4 +88,8 @@ class ReponseSerializer(serializers.ModelSerializer):
         model = Reponse
         fields = ('id_reponse','administration','etudiant','requete','dateHeureRep','status','description')
 
-
+"""
+class InscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Inscription
+        fields = """
