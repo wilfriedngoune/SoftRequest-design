@@ -46,16 +46,16 @@ class AdministrationList(CreateModelMixin, ListModelMixin, GenericViewSet):
 @api_view(['POST'])
 def insertUser(request):
     if request.method == 'POST':
-        etudiant_data = request.post
+        etudiant_data = request.data
         etudiants_serializer = EtudiantSerializer(data = etudiant_data)
         if etudiants_serializer.is_valid():
             etudiants_serializer.save()
             return Response({
-                "donnee" : etudiants_serializer.data, 
+                "donnee" : etudiants_serializer, 
                 "Message" : "Added Successfully"
                 })
         return Response({
-                "donnee" : etudiants_serializer.data, 
+                "donnee" : etudiants_serializer, 
                 "Message" : "Failed to request .."
                 })
 
