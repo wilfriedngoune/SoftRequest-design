@@ -47,15 +47,6 @@ class AdministrationList(CreateModelMixin, ListModelMixin, GenericViewSet):
     serializer_class = AdministrationSerializer
     queryset = Administration.objects.all()
 
-    """def list(self, request):
-        queryset = self.get_queryset()
-        serializer = EtudiantSerializer(queryset, many = True)
-        return Response(serializer.data)"""
-
-
-
-
-
 
 
 @api_view(['POST'])
