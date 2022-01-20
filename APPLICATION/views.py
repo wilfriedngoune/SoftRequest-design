@@ -50,7 +50,7 @@ def insertUser(request):
         etudiants_serializer = EtudiantSerializer(data = etudiant_data)
         etudiants_serializer.save()
         return Response({
-            "donnee" : etudiants_serializer, 
+            "donnee" : etudiant_data, 
             "Message" : "Added Successfully"
             })
 
