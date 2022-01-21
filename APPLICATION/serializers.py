@@ -66,7 +66,7 @@ class PieceJointeSerializer(serializers.ModelSerializer):
 class ReqDemandeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReqDemande
-        fields = ('nomDocument','anneeAcademique')
+        fields = ('objet','description','date','nomDocument','anneeAcademique','administration','etudiant','reponse')
 
 
 class ReqAbsenceSerializer(serializers.ModelSerializer):

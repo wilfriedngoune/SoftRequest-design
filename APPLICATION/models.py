@@ -60,8 +60,8 @@ class ReqDemande(models.Model):
     date =  models.DateTimeField(auto_now=True)
     nomDocument = models.CharField(max_length=20)
     anneeAcademique = models.CharField(max_length=10)
-    Administration = models.ForeignKey(Administration, on_delete=models.DO_NOTHING)
-    Etudiant = models.ForeignKey(Etudiant, on_delete=models.DO_NOTHING)
+    administration = models.ForeignKey(Administration, on_delete=models.DO_NOTHING)
+    etudiant = models.ForeignKey(Etudiant, on_delete=models.DO_NOTHING)
     reponse = models.ForeignKey(Reponse, on_delete=models.DO_NOTHING)
 
 
@@ -71,8 +71,8 @@ class ReqAbsence(models.Model):
     date =  models.DateTimeField(auto_now=True)
     unite_enseignement= models.CharField( max_length=30)
     examen= models.CharField(max_length=30)
-    Administration = models.ForeignKey(Administration, on_delete=models.DO_NOTHING)
-    Etudiant = models.ForeignKey(Etudiant, on_delete=models.DO_NOTHING)
+    administration = models.ForeignKey(Administration, on_delete=models.DO_NOTHING)
+    etudiant = models.ForeignKey(Etudiant, on_delete=models.DO_NOTHING)
     reponse = models.ForeignKey(Reponse, on_delete=models.DO_NOTHING)
 
 

@@ -43,17 +43,30 @@ class AdministrationList(CreateModelMixin, ListModelMixin, GenericViewSet):
 
 
 
+
+
+#End points de stockage des donnees
 @api_view(['POST'])
 def insertUser(request):
     if request.method == 'POST':
-        etudiant_data = request.post
-        etudiants_serializer = EtudiantSerializer(data = etudiant_data)
-        etudiants_serializer.save()
-        return Response({
-            "donnee" : etudiants_serializer.data, 
-            "Message" : "Added Successfully"
-            })
+        etudiant_data = request.data
+        first_name = etudiant_data["first_name"]
+        last_name = etudiant_data["last_name"]
+        email = etudiant_data["email"]
+        password = etudiant_data["password"]
 
+        user = User(username=first_name, first_name=first_name, last_name=last_name, email=email, password=password)
+        user.save()
+
+        etudiant = Etudiant(user=user, matricule=etudiant_data["matricule"], niveau=etudiant_data["niveau"], filiere=etudiant_data["filiere"])
+        etudiant.save()
+
+        result = EtudiantSerializer(data=etudiant)
+        if result.is_valid():
+            print("OK")
+            return Response({"etudiant": result.validated_data})
+
+        return Response({"status" : "KO"})
 
 
 
