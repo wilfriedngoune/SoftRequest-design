@@ -1,154 +1,102 @@
-from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.viewsets import GenericViewSet
-from rest_framework.mixins import (CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, ListModelMixin)
+from rest_framework.mixins import (CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, ListModelMixin, DestroyModelMixin)
 from rest_framework.response import Response
-from rest_framework import generics
 from rest_framework.parsers import JSONParser
-from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse
 from rest_framework.serializers import Serializer
+from rest_framework import status
 from .serializers import*
 from .models import* 
-#importation des fichier necessaire pour 
-from django.http import HttpResponseRedirect
+from django.contrib.auth import login, logout, authenticate 
+from django.http import HttpResponseRedirect, request, response
 from django.shortcuts import render
 from .forms import *
+from drf_yasg.utils import swagger_auto_schema
 
-
+from rest_framework.decorators import action
 
 
 # Create your views here.
 
-
-#Endpoint qui permet de mettre un etudiant dans la base de donne
-class UserList(CreateModelMixin, ListModelMixin, GenericViewSet):
+class UserList(CreateModelMixin, ListModelMixin, RetrieveModelMixin,UpdateModelMixin, DestroyModelMixin, GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    """def list(self, request):
-        queryset = self.get_queryset()
-        serializer = UserSerializer(queryset, many = True)
-        return Response(serializer.data)
-"""
-class StudentList(CreateModelMixin, ListModelMixin, GenericViewSet):
+   
+class StudentList(CreateModelMixin, ListModelMixin, RetrieveModelMixin,UpdateModelMixin, DestroyModelMixin, GenericViewSet):
     serializer_class = EtudiantSerializer
     queryset = Etudiant.objects.all()
 
-    """def list(self, request):
-        queryset = self.get_queryset()
-        serializer = EtudiantSerializer(queryset, many = True)
-        return Response(serializer.data)"""
 
-class Administration(CreateModelMixin, ListModelMixin, GenericViewSet):
+class Administration(CreateModelMixin, ListModelMixin, RetrieveModelMixin,UpdateModelMixin, DestroyModelMixin, GenericViewSet):
     serializer_class = AdministrationSerializer
     queryset = Administration.objects.all()
 
-    """def list(self, request):
-        queryset = self.get_queryset()
-        serializer = EtudiantSerializer(queryset, many = True)
-        return Response(serializer.data)"""
+
+class ReqPersonaliseeViewSet(CreateModelMixin, ListModelMixin, RetrieveModelMixin,UpdateModelMixin, DestroyModelMixin, GenericViewSet):
+    serializer_class = ReqPersonaliseSerializer
+    queryset = ReqPersonalisee.objects.all()
+
+
+class ReqInformation_eroneeViewSet(CreateModelMixin, ListModelMixin, RetrieveModelMixin,UpdateModelMixin, DestroyModelMixin, GenericViewSet):
+    serializer_class = ReqInformation_eroneeSerializer
+    queryset = ReqInformation_eronee.objects.all()
+
+
+class ReqAbsenceViewSet(CreateModelMixin, ListModelMixin, RetrieveModelMixin,UpdateModelMixin, DestroyModelMixin, GenericViewSet):
+    serializer_class = ReqAbsenceSerializer
+    queryset = ReqAbsence.objects.all()
+
+class ReqDemandeViewSet(CreateModelMixin, ListModelMixin, RetrieveModelMixin,UpdateModelMixin, DestroyModelMixin, GenericViewSet):
+    serializer_class = ReqDemandeSerializer
+    queryset = ReqDemande.objects.all()
 
 
 
+class SignIn(GenericViewSet):
+
+    serializer_class = SignInSerializer
+
+    @swagger_auto_schema(
+        request_body = SignInSerializer, 
+        operation_description = " Test l'authenticité des infos entrées et retourne le token s'ils sont valident"
+    )
+    @action(methods=['POST'], detail=False)
+
+    def signin(self, request, *args, **kwargs):
+        userserialize = SignInSerializer(data = self.request.data)
+        userserialize.is_valid(raise_exception=True)
+
+        username = userserialize.validated_data.get("username")
+        password = userserialize.validated_data.get("password")
+
+        user = authenticate(username=username, password=password)
+
+        if user is not None :
+            if user.is_active:
+                login(request, user)
+                token = Token.objects.get_or_create(user)[0].key
+                users = UserSerializer(user).data
+                return Response({'user': users }, status=status.HTTP_200_OK)
+            else:
+                return Response({"message" : "non autorisé, utilisateur / mot de passe incorrect"}, status = status.HTTP_401_UNAUTHORIZED) 
+        else:
+                return Response({"message" : "non autorisé, utilisateur / mot de passe incorrect"}, status = status.HTTP_401_UNAUTHORIZED)
 
 
 
+class SignOut(GenericViewSet):
 
+    @swagger_auto_schema(
+        operation_description = " Test l'authenticité des infos entrées et retourne le token s'ils sont valident"
+    )
+    @action(methods=['POST'], detail=False)
 
-@api_view(['POST'])
-def insertUser(request):
-    if request.method == 'POST':
-        etudiant_data=JSONParser().parse(request)
-        etudiants_serializer=EtudiantSerializer(data=etudiant_data)
-        if etudiants_serializer.is_valid():
-            etudiants_serializer.save()
-            return JsonResponse("Added Successfully",safe=False)
-        return JsonResponse("Failed to Add",safe=False)
-
-
-
-
-"""@api_view(['GET'])
-    E1 = Etudiant()
-    E1.meStocker()
-    etudiants = Etudiant.objects.all()
-    serialization = EtudiantSerializer(etudiants, many = True)
-    return Response(serialization.data)"""
-
-
-
-
-
-
-
-
-
-
-
-
-# Api pour  afficher tous les etudiants et enseignants
-@api_view(['GET'])
-def allEtudiant(request):
-    etudiants = Etudiant.objects.all()
-    serialization = EtudiantSerializer(etudiants, many = True)
-    return Response(serialization.data)
-
-
-@api_view(['GET'])
-def allAdministration(request):
-    administration = Administration.objects.all()
-    serializer = AdministrationSerializer(administration, many = True)
-    return Response(serializer.data)
-
-
-# Api pour  creer  un etudiants et enseignants
-@api_view(['POST'])
-def addEtudiant(request):
-    serialization = EtudiantSerializer(data = request.data,many = True)
-    if serialization.is_valid():
-        serialization.save()
-    return Response(serialization.data)
-
-
-@api_view(['POST'])
-def addAdministration(request):
-    
-    serializer = AdministrationSerializer(data = request.data,many = True)
-    if serializer.is_valid():
-        serializer.save()
-    return Response(serializer.data)
-
-
-
-# Api pour  afficher un etudiant/enseignant
-@api_view(['GET'])
-def getEtudiant(request, matricule):
-    etudiant = Etudiant.objects.get(matricule = matricule)
-    serialization = EtudiantSerializer(etudiant)
-    return Response(serialization.data)
-
-@api_view(['GET'])
-def getAdministration(request,email_pass):
-    administration = Administration.objects.get (email_pass = email_pass)
-    serialization = AdministrationSerializer(administration)
-    return Response(serialization.data)
-
-@api_view(['PUT'])
-def updateAdministration(request,email_pass):
-    administration = Administration.objects.get (email_pass = email_pass)
-    serialization = AdministrationSerializer(instance= administration, data = request.data)
-    if Serializer.is_valid():
-        serialization.save()
-    return Response(serialization.data)
-
-
-@api_view(['PUT'])
-def updateEtudiant(request,matricule):
-    etudiants = Etudiant.objects.get (matricule = matricule)
-    serialization = AdministrationSerializer(instance= etudiants, data = request.data)
-    if Serializer.is_valid():
-        serialization.save()
-    return Response(serialization.data)
-
+    def signout(self, request, *args, **kwargs):
+        user = request.user.username
+        request.user.auth_token.delete()
+        logout(request)
+        
+        return Response({"message" : f"Hasta la proxima ves!!{user}"}, status = status.HTTP_200_OK)
 

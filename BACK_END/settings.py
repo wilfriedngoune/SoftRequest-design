@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-(r9g4q0p9q0#e5*wsyj7cd+n(p(ad1t=h_&25jts_9@+ok8mjz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["softrequest.herokuapp.com", "127.0.0.1"]
+ALLOWED_HOSTS = ["softrequest.herokuapp.com", "127.0.0.1", "172.20.10.12"]
 
 
 # Application definition
@@ -36,12 +36,15 @@ ALLOWED_HOSTS = ["softrequest.herokuapp.com", "127.0.0.1"]
 INSTALLED_APPS = [
     'APPLICATION',
     'rest_framework',
+    'rest_framework.authtoken',
+    'drf_yasg',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
 ]
 
 MIDDLEWARE = [

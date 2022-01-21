@@ -1,89 +1,172 @@
 from dataclasses import field
 from re import M
 from tkinter import E
-from rest_framework import serializers
-from django.db import models
+from rest_framework import serializers, fields
+from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
 from.models import*
 
 
 class UserSerializer(serializers.ModelSerializer):
+
+    def update(self, instance:User, validated_data):
+        validated_data.pop("password")
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        return instance
+
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name', 'last_name', 'email', 'password')
+        extra_kwargs = {"password" : {"write_only": True}}
 
 
 class AdministrationSerializer(serializers.ModelSerializer):
-    
-    user = UserSerializer()
+
+    def create(self, validated_data):
+        return Administration.objects.create(**validated_data) 
+
+    def update(self, instance:Administration, validated_data):
+        validated_data.pop("user")
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        return instance
     
     class Meta:
-        
         model = Administration
         fields = ('user', 'id', 'departement')
     
-    def create(self, validated_data):
-
-        user_admin = self.validated_data.pop('user')
-        username = user_admin['username']
-        first_name = user_admin['first_name']
-        last_name = user_admin['last_name']
-        email = user_admin['email']
-        password = user_admin['password']
-        user = User.objects.create(username = username, first_name = first_name, last_name = last_name,
-                                         email = email, password = password)
-        return Administration.objects.create(user = user, departement = self.validated_data['departement'])       
-
-
+          
 class EtudiantSerializer(serializers.ModelSerializer):
-    
-    user = UserSerializer()
+        
+    def create(self, validated_data):
+        return Etudiant.objects.create(**validated_data)
+                    
+    def update(self, instance:Etudiant, validated_data):
+        validated_data.pop("user")
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        return instance
 
     class Meta:
         model = Etudiant
         fields = ('user', 'matricule','filiere','niveau')
 
-    def create(self, validated_data):
-
-        user_info = self.validated_data.pop('user')
-        first_name = user_info['first_name']
-        last_name = user_info['last_name']
-        email = user_info['email']
-        password = user_info['password']
-        username = user_info['username']
-        user = User.objects.create(username = username, first_name = first_name, last_name = last_name,
-                                         email = email, password = password)
-        return Etudiant.objects.create(user = user, matricule = self.validated_data['matricule'],
-                        filiere = self.validated_data['filiere'], niveau = self.validated_data['niveau'])       
-
 
 class PieceJointeSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        return PieceJointe.objects.create(**validated_data)
+
+    def update(self, instance:PieceJointe, validated_data):
+        validated_data.pop("requete")
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        return instance
+
     class Meta:
         model = PieceJointe
         fields = ('requete','nom_pieceJointe','type_pieceJointe','pieceJointe')
 
 
 class ReqDemandeSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        return ReqDemande.objects.create(**validated_data)
+
+    def update(self, instance:ReqDemande, validated_data):
+        validated_data.pop("administration")
+        validated_data.pop("etudiant")
+        validated_data.pop("reponse")
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        return instance
+
     class Meta:
         model = ReqDemande
-        fields = ('nomDocument','anneeAcademique')
+        fields = ('objet','description','date','nomDocument','anneeAcademique','administration','etudiant','reponse')
+
+
+
+class ReqPersonaliseSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        return ReqPersonalisee.objects.create(**validated_data)
+
+    def update(self, instance:ReqPersonalisee, validated_data):
+        validated_data.pop("administration")
+        validated_data.pop("etudiant")
+        validated_data.pop("reponse")
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        return instance
+
+    class Meta:
+        model = ReqDemande
+        fields = ('objet','description','date','administration','etudiant','reponse')
+
+
 
 
 class ReqAbsenceSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        return ReqAbsence.objects.create(**validated_data)
+
+    def update(self, instance:ReqAbsence, validated_data):
+        validated_data.pop("administration")
+        validated_data.pop("etudiant")
+        validated_data.pop("reponse")
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        return instance
+
     class Meta:
         model = ReqAbsence
-        fields = ('unite_enseignement','examen')
+        fields = ('objet','description','date','unite_enseignement','examen','administration','etudiant','reponse')
 
 
-class ReInformation_eroneeSerializer(serializers.ModelSerializer):
+class ReqInformation_eroneeSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        return ReqInformation_eronee.objects.create(**validated_data)
+
+    def update(self, instance:ReqInformation_eronee, validated_data):
+        validated_data.pop("administration")
+        validated_data.pop("etudiant")
+        validated_data.pop("reponse")
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        return instance
+
     class Meta:
         model = ReqInformation_eronee
-        fields = ('info_erronee','ancienneInfo','nouvelleInfo')
+        fields = ('objet','description','date','ancienneInfo','nouvelleInfo','administration','etudiant','reponse')
 
 
 class ReponseSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        return Reponse.objects.create(**validated_data)
+
+    def update(self, instance:Reponse, validated_data):
+        validated_data.pop("administration")
+        validated_data.pop("etudiant")
+        validated_data.pop("reponse")
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        return instance
+
     class Meta:
         model = Reponse
-        fields = ('id_reponse','administration','etudiant','requete','dateHeureRep','status','description')
+        fields = ('dateHeureRep','status','description')
+
+class SignInSerializer(serializers.Serializer):
+    username = fields.CharField(required= True)
+    password = fields.CharField( write_only= True, required= True)
+    token = fields.SerializerMethodField()
+
+    def get_token(self, instance : User):
+        return Token.object.get( user= instance).key
 
 
