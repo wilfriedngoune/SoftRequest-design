@@ -1,6 +1,4 @@
 from dataclasses import field, fields
-from re import M
-from tkinter import E
 from rest_framework import serializers, fields
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
@@ -168,9 +166,3 @@ class SignInSerializer(serializers.Serializer):
 
     def get_token(self, instance : User):
         return Token.object.get( user= instance).key
-
-"""
-class InscriptionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Inscription
-        fields = """
